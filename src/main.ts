@@ -21,6 +21,7 @@ export default class LinkOpenPlugin extends Plugin {
 				// Open with browser
 				else if (this.settings.openMethod === "browser") {
 					const href = el.getAttribute("linkto");
+					console.log(href);
 					href ? window.open(href) : undefined;
 				}
 				// Open with obsidian tab
@@ -40,6 +41,9 @@ export default class LinkOpenPlugin extends Plugin {
 		const removeUrl = (evt: MouseEvent) => {
 			const el = evt.target as HTMLElement;
 			if (!el.classList.contains("external-link")) {
+				return;
+			}
+			if (el.getAttribute("href") == "javascript:void(0);") {
 				return;
 			}
 			const href = el.getAttribute("href");
@@ -87,7 +91,14 @@ class LinkModal extends Modal {
 		frame.src = this.link;
 		frame.setAttribute("frameborder", "0");
 		frame.width = "100%";
-		frame.height = "100%";
+		frame.height = "90%";
+		const button = contentEl.createEl("button");
+		button.setAttribute(
+			"onclick",
+			`window.open("${this.link}");this.close()`
+		);
+		button.innerHTML = "Open in Browser";
+		button.addClass("modal-button");
 	}
 
 	onClose() {

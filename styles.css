@@ -2,3 +2,15 @@
 	width: 80vw;
 	height: 70vh;
 }
+
+.modal-content {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 10px;
+}
+
+.modal-button {
+	margin-top: 10px;
+}
