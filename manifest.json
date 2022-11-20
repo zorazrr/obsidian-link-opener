@@ -1,10 +1,10 @@
 {
-	"id": "obsidian-sample-plugin",
-	"name": "Sample Plugin",
+	"id": "obsidian-link-opener",
+	"name": "Link Opener",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "This is a sample plugin for Obsidian. This plugin demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
+	"description": "A simple plugin to open external links within Obsidian.",
+	"author": "Zora Zhang",
+	"authorUrl": "https://zorazrr.github.io/",
 	"isDesktopOnly": false
 }
