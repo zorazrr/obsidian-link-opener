@@ -31,14 +31,16 @@ export default class LinkOpenSettingTab extends PluginSettingTab {
 
 		containerEl.createEl("h2", { text: "Link Opener Settings" });
 
-		new Setting(containerEl).setName("Open Link with").addDropdown((dd) =>
-			dd
-				.addOptions(openMethods)
-				.setValue(this.plugin.settings.openMethod)
-				.onChange(async (value) => {
-					this.plugin.settings.openMethod = value;
-					await this.plugin.saveSettings();
-				})
-		);
+		new Setting(containerEl)
+			.setName("Open external links with")
+			.addDropdown((dd) =>
+				dd
+					.addOptions(openMethods)
+					.setValue(this.plugin.settings.openMethod)
+					.onChange(async (value) => {
+						this.plugin.settings.openMethod = value;
+						await this.plugin.saveSettings();
+					})
+			);
 	}
 }

@@ -1,4 +1,5 @@
 import { ItemView, Workspace, WorkspaceLeaf } from "obsidian";
+import { globalLink } from "./main";
 
 export const LINK_VIEW = "link-view";
 
@@ -9,7 +10,7 @@ export class LinkView extends ItemView {
 	constructor(workspace: Workspace, leaf: WorkspaceLeaf, link: string) {
 		super(leaf);
 		this.workspace = workspace;
-		this.link = link;
+		this.link = globalLink;
 	}
 
 	getViewType() {
@@ -17,7 +18,7 @@ export class LinkView extends ItemView {
 	}
 
 	getDisplayText() {
-		return "Link View";
+		return "External Link View";
 	}
 
 	setLink(link: string) {
@@ -31,10 +32,8 @@ export class LinkView extends ItemView {
 		frame.src = this.link;
 		frame.setAttribute("frameborder", "0");
 		frame.width = "100%";
+		frame.height = "100%";
 	}
 
-	async onClose() {
-		console.log(this.workspace);
-		this.workspace.detachLeavesOfType(LINK_VIEW);
-	}
+	async onClose() {}
 }
