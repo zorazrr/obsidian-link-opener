@@ -3,7 +3,7 @@
 	height: 70vh;
 }
 
-.modal-content {
+.modal-content.link-modal {
 	display: flex;
 	justify-content: center;
 	align-items: center;

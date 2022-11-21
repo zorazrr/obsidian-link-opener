@@ -10,9 +10,9 @@ export const DEFAULT_SETTINGS: LinkOpenPluginSettings = {
 };
 
 const openMethods = {
+	browser: "Browser",
 	modal: "Obsidian Modal",
 	tab: "Obsidian Tab",
-	browser: "Browser",
 };
 
 export default class LinkOpenSettingTab extends PluginSettingTab {
@@ -36,7 +36,6 @@ export default class LinkOpenSettingTab extends PluginSettingTab {
 				.addOptions(openMethods)
 				.setValue(this.plugin.settings.openMethod)
 				.onChange(async (value) => {
-					console.log("Method: " + value);
 					this.plugin.settings.openMethod = value;
 					await this.plugin.saveSettings();
 				})

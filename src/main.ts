@@ -1,5 +1,7 @@
-import { App, Modal, Plugin, ItemView, WorkspaceLeaf } from "obsidian";
+import { Plugin } from "obsidian";
 import LinkOpenPluginSettings, { DEFAULT_SETTINGS } from "./settings";
+import { LinkView, LINK_VIEW } from "./view";
+import { LinkModal } from "./modal";
 
 export default class LinkOpenPlugin extends Plugin {
 	settings: LinkOpenPluginSettings;
@@ -8,24 +10,35 @@ export default class LinkOpenPlugin extends Plugin {
 		await this.loadSettings();
 
 		// This is a click event handler
-		const clickEvt = (evt: MouseEvent) => {
+		const clickEvt = async (evt: MouseEvent) => {
 			const el = evt.target as HTMLElement;
 
 			if (el.classList.contains("external-link")) {
+				const href = el.getAttribute("linkto");
 				// Open with modal
-				if (this.settings.openMethod === "modal") {
-					const href = el.getAttribute("linkto");
-					href ? new LinkModal(this.app, href).open() : undefined;
-					return false;
+				if (this.settings.openMethod === "modal" && href) {
+					new LinkModal(this.app, href).open();
 				}
 				// Open with browser
-				else if (this.settings.openMethod === "browser") {
-					const href = el.getAttribute("linkto");
-					console.log(href);
-					href ? window.open(href) : undefined;
+				else if (this.settings.openMethod === "browser" && href) {
+					window.open(href);
 				}
 				// Open with obsidian tab
-				else if (this.settings.openMethod === "tab") {
+				else if (this.settings.openMethod === "tab" && href) {
+					console.log(this);
+					this.registerView(
+						LINK_VIEW,
+						(leaf) => new LinkView(this.app.workspace, leaf, href)
+					);
+
+					await this.app.workspace
+						.getLeaf("tab")
+						.setViewState({ type: LINK_VIEW, active: true });
+
+					this.app.workspace.revealLeaf(
+						this.app.workspace.getLeavesOfType(LINK_VIEW)[0]
+					);
+
 					return;
 				}
 			}
@@ -60,7 +73,9 @@ export default class LinkOpenPlugin extends Plugin {
 		this.addSettingTab(new LinkOpenPluginSettings(this.app, this));
 	}
 
-	onunload() {}
+	onunload() {
+		this.app.workspace.detachLeavesOfType(LINK_VIEW);
+	}
 
 	async loadSettings() {
 		this.settings = Object.assign(
@@ -73,67 +88,4 @@ export default class LinkOpenPlugin extends Plugin {
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
-}
-
-// MODAL - MOVE TO ANOTHER FILE
-
-class LinkModal extends Modal {
-	link: string;
-
-	constructor(app: App, link: string) {
-		super(app);
-		this.link = link;
-	}
-
-	onOpen() {
-		const { contentEl } = this;
-		const frame = contentEl.createEl("iframe");
-		frame.src = this.link;
-		frame.setAttribute("frameborder", "0");
-		frame.width = "100%";
-		frame.height = "90%";
-		const button = contentEl.createEl("button");
-		button.setAttribute(
-			"onclick",
-			`window.open("${this.link}");this.close()`
-		);
-		button.innerHTML = "Open in Browser";
-		button.addClass("modal-button");
-	}
-
-	onClose() {
-		const { contentEl } = this;
-		contentEl.empty();
-	}
-}
-
-// VIEW - MOVE TO ANOTHER FILE
-
-export class LinkView extends ItemView {
-	link: string;
-
-	constructor(leaf: WorkspaceLeaf, link: string) {
-		super(leaf);
-		this.link = link;
-	}
-
-	getViewType() {
-		return "link-view";
-	}
-
-	getDisplayText() {
-		return "Link View";
-	}
-
-	async onOpen() {
-		const container = this.containerEl.children[1];
-		container.empty();
-		const frame = container.createEl("iframe");
-		frame.src = this.link;
-		frame.setAttribute("frameborder", "0");
-		frame.width = "100%";
-		frame.height = "100%";
-	}
-
-	async onClose() {}
 }
