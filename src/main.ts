@@ -25,7 +25,12 @@ export default class LinkOpenPlugin extends Plugin {
 
 				// Open with modal
 				if (this.settings.openMethod === "modal" && href) {
-					new LinkModal(this.app, href).open();
+					new LinkModal(
+						this.app,
+						href,
+						this.settings.modalWidth,
+						this.settings.modalHeight
+					).open();
 				}
 
 				// Open with browser
@@ -56,7 +61,7 @@ export default class LinkOpenPlugin extends Plugin {
 			return clickEvt(evt);
 		});
 
-		// This handles removign external url defaut redirect
+		// This handles removing external url default redirect
 		const removeUrl = (evt: MouseEvent) => {
 			const el = evt.target as HTMLElement;
 			if (!el.classList.contains("external-link")) {

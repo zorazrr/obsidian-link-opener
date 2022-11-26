@@ -1,10 +1,10 @@
 {
 	"id": "obsidian-link-opener",
-	"name": "Link Opener",
+	"name": "External Link Opener",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "A simple plugin to open external links within Obsidian.",
+	"description": "Open external links within Obsidian using a modal or a tab.",
 	"author": "Zora Zhang",
 	"authorUrl": "https://zorazrr.github.io/",
-	"isDesktopOnly": false
+	"isDesktopOnly": true
 }
