@@ -11,7 +11,7 @@ You can also adjust the link opener modal's width and height.
 
 ## Manually installing the plugin
 
-Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/obsidian-link-opener/`.
 
 ## Demo
 
